@@ -122,6 +122,12 @@ body {
 .sheet-overlay[data-state="open"] { animation: fade-in 300ms ease-out; }
 .sheet-overlay[data-state="closed"] { animation: fade-out 200ms ease-in; }
 
+/* Without JavaScript, nothing would ever reveal the content, so show it. */
+html:not(.js) [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

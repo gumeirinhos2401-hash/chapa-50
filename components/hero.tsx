@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <section id="topo" className="relative overflow-hidden bg-ink text-cream">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 md:grid-cols-2 md:py-20">
-        <Reveal>
+        <Reveal immediate>
           <p className="font-display text-sm tracking-widest text-mustard">SMASH NA CHAPA · VILA JAGUARA</p>
           <h1 className="mt-4">
             <NeonSign size="lg" />
@@ -26,7 +26,7 @@ export function Hero() {
             </Button>
           </div>
         </Reveal>
-        <Reveal delay={0.15}>
+        <Reveal immediate>
           <div className="float relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-full border-8 border-mustard shadow-[0_0_60px_rgba(214,40,40,0.6)]">
             <SafeImage photo={HERO_PHOTO} label="Chapa 50" priority sizes="(min-width: 768px) 28rem, 90vw" />
           </div>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { addItem, emptyCart } from "@/lib/cart";
-import { isValid, validateCheckout, type CheckoutForm } from "@/lib/checkout";
+import { firstInvalidField, isValid, validateCheckout, type CheckoutForm } from "@/lib/checkout";
 
 const cart = addItem(emptyCart, { itemId: "classico", name: "Clássico da Chapa", unitPriceCents: 2990 });
 const pickup: CheckoutForm = { name: "Ana", fulfillment: "retirada", address: "", payment: "pix", changeFor: "" };
@@ -71,6 +71,18 @@ describe("validateCheckout", () => {
 
   it("ignores the change field when payment is not cash", () => {
     expect(validateCheckout({ ...pickup, changeFor: "abc" }, cart, 700)).toEqual({});
+  });
+});
+
+describe("firstInvalidField", () => {
+  it("returns the first form field with an error, in form order", () => {
+    expect(firstInvalidField({ payment: "x", name: "y" })).toBe("name");
+    expect(firstInvalidField({ changeFor: "x", address: "y" })).toBe("address");
+  });
+
+  it("ignores the cart-only error and returns undefined when no field is wrong", () => {
+    expect(firstInvalidField({ cart: "Seu carrinho está vazio." })).toBeUndefined();
+    expect(firstInvalidField({})).toBeUndefined();
   });
 });
 

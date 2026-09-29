@@ -24,7 +24,7 @@ function SheetContent({ className, children, ...props }: React.ComponentProps<ty
         {children}
         <SheetPrimitive.Close
           aria-label="Fechar carrinho"
-          className="absolute right-4 top-4 rounded-full p-2 text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ink/30"
+          className="absolute right-4 top-4 rounded-full p-2 text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
         >
           <X className="h-5 w-5" aria-hidden />
         </SheetPrimitive.Close>

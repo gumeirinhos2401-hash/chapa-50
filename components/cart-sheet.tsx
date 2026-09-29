@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { subtotalCents, totalCents } from "@/lib/cart";
 import {
   EMPTY_FORM,
+  firstInvalidField,
   isValid,
   PAYMENT_LABELS,
   validateCheckout,
@@ -22,6 +23,14 @@ import {
 import { STORE } from "@/lib/config";
 import { formatBRL } from "@/lib/money";
 import { buildOrderMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+
+const FIELD_IDS: Record<Exclude<CheckoutField, "cart">, string> = {
+  name: "nome",
+  fulfillment: "entrega",
+  address: "endereco",
+  payment: "pagamento-pix",
+  changeFor: "troco",
+};
 
 const OPTION = "flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border-2 border-ink bg-white px-3 text-sm has-[[data-state=checked]]:bg-ink has-[[data-state=checked]]:text-cream";
 
@@ -38,29 +47,31 @@ export function CartSheet() {
   const { cart, setQty, open, setOpen } = useCart();
   const [form, setForm] = useState<CheckoutForm>(EMPTY_FORM);
   const [touched, setTouched] = useState<Partial<Record<CheckoutField, boolean>>>({});
-  const [blockedUrl, setBlockedUrl] = useState<string | null>(null);
+  const [popupBlocked, setPopupBlocked] = useState(false);
 
   const errors = useMemo(() => validateCheckout(form, cart, STORE.deliveryFeeCents), [form, cart]);
   const valid = isValid(errors);
   const showError = (field: CheckoutField) => (touched[field] ? errors[field] : undefined);
-  const update = (patch: Partial<CheckoutForm>) => {
-    setForm((f) => ({ ...f, ...patch }));
-    setBlockedUrl(null);
-  };
+  const update = (patch: Partial<CheckoutForm>) => setForm((f) => ({ ...f, ...patch }));
+  // Built from the current cart and form on every render, so the fallback link never goes stale.
+  const orderUrl = valid
+    ? buildWhatsAppUrl(STORE.whatsappNumber, buildOrderMessage(cart, form, STORE.deliveryFeeCents, STORE.name))
+    : null;
   const touch = (field: CheckoutField) => setTouched((t) => ({ ...t, [field]: true }));
 
   function send() {
-    if (!valid) return;
-    const url = buildWhatsAppUrl(
-      STORE.whatsappNumber,
-      buildOrderMessage(cart, form, STORE.deliveryFeeCents, STORE.name),
-    );
-    const win = window.open(url, "_blank");
+    const invalidField = firstInvalidField(errors);
+    if (invalidField) {
+      document.getElementById(FIELD_IDS[invalidField])?.focus();
+      return;
+    }
+    if (!orderUrl) return;
+    const win = window.open(orderUrl, "_blank");
     if (win) {
       win.opener = null;
-      setBlockedUrl(null);
+      setPopupBlocked(false);
     } else {
-      setBlockedUrl(url);
+      setPopupBlocked(true);
     }
   }
 
@@ -224,15 +235,15 @@ export function CartSheet() {
                   </div>
                 </dl>
 
-                <Button type="submit" size="lg" disabled={!valid}>
+                <Button type="submit" size="lg" aria-disabled={!valid} className="aria-disabled:opacity-50">
                   <Send className="h-4 w-4" aria-hidden />
                   Enviar pelo WhatsApp
                 </Button>
                 {!valid && <p className="text-sm text-ink/70">Preencha os campos obrigatórios para enviar.</p>}
-                {blockedUrl && (
+                {popupBlocked && orderUrl && (
                   <p role="alert" className="text-sm">
                     O navegador bloqueou a nova aba.{" "}
-                    <a href={blockedUrl} target="_blank" rel="noopener noreferrer" className="font-bold text-cherry underline">
+                    <a href={orderUrl} target="_blank" rel="noopener noreferrer" className="font-bold text-cherry underline">
                       Toque aqui para abrir o WhatsApp
                     </a>
                     .

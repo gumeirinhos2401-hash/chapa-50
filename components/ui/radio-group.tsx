@@ -13,7 +13,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-current focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cherry/30",
+        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-current focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-cream",
         className,
       )}
       {...props}

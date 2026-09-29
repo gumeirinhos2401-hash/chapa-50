@@ -36,12 +36,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [bump, setBump] = useState(0);
   const [flights, setFlights] = useState<Flight[]>([]);
+  const [lastAdded, setLastAdded] = useState<string | null>(null);
   const cartIconRef = useRef<HTMLButtonElement | null>(null);
   const nextFlightId = useRef(0);
 
   const add = useCallback((input: AddItemInput, fly?: { src: string; el: HTMLElement | null }) => {
     setCart((current) => addItem(current, input));
     setBump((b) => b + 1);
+    setLastAdded(input.option ? `${input.name} (${input.option})` : input.name);
 
     const target = cartIconRef.current;
     if (!fly?.el || !target || prefersReducedMotion()) return;
@@ -67,9 +69,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [cart, bump, add, setQty, open],
   );
 
+  const count = itemCount(cart);
+
   return (
     <CartContext.Provider value={value}>
       {children}
+      <p aria-live="polite" className="sr-only">
+        {lastAdded ? `${lastAdded} adicionado. ${count} ${count === 1 ? "item" : "itens"} no carrinho.` : ""}
+      </p>
       <AnimatePresence>
         {flights.map((f) => (
           <motion.img

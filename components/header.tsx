@@ -12,7 +12,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b-4 border-cherry bg-ink">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <a href="#topo" aria-label="Chapa 50, voltar ao topo" className="rounded focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pool/50">
+        <a href="#topo" aria-label="Chapa 50, voltar ao topo" className="rounded focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pool">
           <NeonSign size="sm" />
         </a>
         <button
@@ -20,7 +20,7 @@ export function Header() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label={label}
-          className="relative flex h-11 w-11 items-center justify-center rounded-full bg-cherry text-cream transition-colors hover:bg-cherry-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pool/50"
+          className="relative flex h-11 w-11 items-center justify-center rounded-full bg-cherry text-cream transition-colors hover:bg-cherry-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pool"
         >
           <ShoppingBag className="h-5 w-5" aria-hidden />
           {count > 0 && (

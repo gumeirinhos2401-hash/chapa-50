@@ -56,3 +56,9 @@ export function validateCheckout(
 export function isValid(errors: CheckoutErrors): boolean {
   return Object.keys(errors).length === 0;
 }
+
+const FIELD_ORDER: Exclude<CheckoutField, "cart">[] = ["name", "fulfillment", "address", "payment", "changeFor"];
+
+export function firstInvalidField(errors: CheckoutErrors): Exclude<CheckoutField, "cart"> | undefined {
+  return FIELD_ORDER.find((field) => errors[field] !== undefined);
+}
