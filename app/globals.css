@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cherry: #d62828;
+  --color-cherry-dark: #a61e1e;
+  --color-cream: #fff3d6;
+  --color-ink: #1a1a1a;
+  --color-mustard: #f4b400;
+  --color-pool: #4fc3c8;
+  --font-display: "Bungee", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.checker {
+  background-image: conic-gradient(
+    var(--color-ink) 90deg,
+    var(--color-cream) 90deg 180deg,
+    var(--color-ink) 180deg 270deg,
+    var(--color-cream) 270deg
+  );
+  background-size: 32px 32px;
+}
+
+@keyframes checker-scroll {
+  to {
+    background-position: 64px 0;
+  }
+}
+
+.checker-scroll {
+  animation: checker-scroll 3s linear infinite;
+}
+
+.neon-text {
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px var(--color-cherry),
+    0 0 22px var(--color-cherry),
+    0 0 42px var(--color-cherry);
+}
+
+.neon-text-pool {
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px var(--color-pool),
+    0 0 22px var(--color-pool),
+    0 0 42px var(--color-pool);
+}
+
+@keyframes neon-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.35;
+  }
+}
+
+.neon-flicker {
+  animation: neon-flicker 7s infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.wiggle {
+  animation: wiggle 1.6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(2deg);
+  }
+}
+
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes sheet-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sheet-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.sheet-content[data-state="open"] { animation: sheet-in 300ms ease-out; }
+.sheet-content[data-state="closed"] { animation: sheet-out 200ms ease-in; }
+.sheet-overlay[data-state="open"] { animation: fade-in 300ms ease-out; }
+.sheet-overlay[data-state="closed"] { animation: fade-out 200ms ease-in; }
+
+/* Without JavaScript, nothing would ever reveal the content, so show it. */
+html:not(.js) [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
