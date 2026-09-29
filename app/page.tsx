@@ -1,3 +1,13 @@
+import { Header } from "@/components/header";
+import { Hero } from "@/components/hero";
+
 export default function Home() {
-  return <main className="p-8 font-display text-4xl text-cherry">Chapa 50</main>;
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+      </main>
+    </>
+  );
 }
