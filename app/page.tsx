@@ -1,5 +1,7 @@
+import { ComboShowcase } from "@/components/combo-showcase";
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
+import { MenuTabs } from "@/components/menu-tabs";
 
 export default function Home() {
   return (
@@ -7,6 +9,8 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <MenuTabs />
+        <ComboShowcase />
       </main>
     </>
   );
