@@ -1,3 +1,4 @@
+import { CartSheet } from "@/components/cart-sheet";
 import { ComboShowcase } from "@/components/combo-showcase";
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
@@ -12,6 +13,7 @@ export default function Home() {
         <MenuTabs />
         <ComboShowcase />
       </main>
+      <CartSheet />
     </>
   );
 }
